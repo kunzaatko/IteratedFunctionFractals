@@ -1,0 +1,21 @@
+ABECEDA {
+    [znak1] - ([stupně_protisměru (float)], [stupně_posměru (float)], [dopředu_ano/ne (bool)], [dozadu_ano/ne (bool)]);
+    [znak2] - ([stupně_protisměru (float)], [stupně_posměru (float)], [dopředu_ano/ne (bool)], [dozadu_ano/ne (bool)]);
+    [znak3] - ([stupně_protisměru (float)], [stupně_posměru (float)], [dopředu_ano/ne (bool)], [dozadu_ano/ne (bool)]);
+    [znak4] - ([stupně_protisměru (float)], [stupně_posměru (float)], [dopředu_ano/ne (bool)], [dozadu_ano/ne (bool)]);
+    ...
+    ...
+};
+AXIOM {[počáteční_string/axiom_L-Systému/příkazy_první_iterace]};
+GENERAČNÍ PROMĚNA {
+    [Přepisovaný_znak1] -> [Vložený_string];
+	[Přepisovaný_znak2] -> -[Vložený_string];
+    ...
+    ...
+};
+
+POZN.:
+    -délka *AXIOMu je omezena na 50 znaků, jinak by se musel vytvořit další dynamicky alokovaný string;
+    -délka *Přepisovaný_znak je omezen na jeden, protože se dá předpis na L-SYSTEM upravit aby odpovídalo více znakům;
+    -délka *Vložený_string je omezena na 50 znaků, jinak by se musel vytvořit další dynamicky alokovaný string;
+    -uživatel musí sám dbát na to, aby byly znaky a modifikace jednoznačně zadané

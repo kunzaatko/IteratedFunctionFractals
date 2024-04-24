@@ -1,0 +1,11 @@
+ABECEDA {
+    + - (60,0,0,0);
+    - - (0,60,0,0);
+    R - (0,0,1,0);
+    L - (0,0,1,0);
+};
+AXIOM {L};
+GENERACNI PROMENA {
+L -> L+R++R-L--LL-R+;
+R -> -L+RR++R+L--L-R;
+};
