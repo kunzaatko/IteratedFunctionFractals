@@ -2,13 +2,13 @@
 
 #include <stdbool.h>
 
-double angle;
-double x;
-double y;
-unsigned char r;
-unsigned char g;
-unsigned char b;
-const double PI;
+typedef struct pos_t {
+    double X;
+    double Y;
+}pos_t;
+
+//return current position to pos_t
+pos_t XY_pos();
 
 // inicializacni funkce
 bool zelva_init();

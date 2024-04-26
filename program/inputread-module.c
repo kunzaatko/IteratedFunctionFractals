@@ -2,17 +2,21 @@
 #include "axiom_string-module.h"
 #include <stdio.h>
 
+// type for representing the prescription of the iterated function
+// `alpha` -> SLL of the letters and their corresponding graphic actions
+// `axiom` -> DLL of the starting sequence (sentence) $f_0$
+// `mod` -> SLL of the substitutions that are made in each iteration
 typedef struct input_t {
     ALPHABET_t** alpha;
     node_t** axiom;
     MODIFICATION_t** mod;
 } input_t;
 
-void load_input(input_t* out, const char* input_name)
+input_t load_input(input_t* out, const char* input_name)
 {
     FILE* input = fopen(input_name, "r");
     if (input == NULL) {
-        printf("Soubor 'input.txt' nelze otevřít\n");
+        printf("Soubor '{%s}' nelze otevřít\n", input_name);
     }
 
     //LOAD_ALPHA
@@ -115,4 +119,6 @@ void load_input(input_t* out, const char* input_name)
     print_DLL_axiom(out->axiom);
     print_SLL_alpha(out->alpha);
     print_SLL_mod(out->mod);
+
+    return *out;
 }

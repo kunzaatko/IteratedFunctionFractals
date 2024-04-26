@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdbool.h>
 
-#include <SDL2/SDL.h>
+#include "SDL2/SDL.h"
 
 // screen dimensions
 const int SCREEN_WIDTH = 2500;
@@ -20,6 +20,8 @@ SDL_Texture* texture = NULL;
 // flag for early quit
 bool quit = false;
 
+const double PI = 3.141592653589793;
+
 // zelva state
 double x = 0.0;
 double y = 0.0;
@@ -28,7 +30,18 @@ unsigned char r = 0;
 unsigned char g = 0;
 unsigned char b = 0;
 
-const double PI = 3.141592653589793;
+typedef struct pos_t {
+    double X;
+    double Y;
+}pos_t;
+
+pos_t XY_pos() {
+    pos_t pos;
+    pos.X = x;
+    pos.Y = y;
+    return pos;
+}
+
 
 void _free_globals()
 {
