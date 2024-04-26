@@ -6,18 +6,15 @@ LDLIBS := -lm -lSDL2 -ldl
 HEADERS := $(wildcard *.h)
 SOURCES := $(wildcard *.c)
 OBJECTS := $(patsubst %.c, %.o, $(SOURCES))
-TARGETS := $(patsubst zelva,,$(patsubst %.c, %, $(SOURCES)))
 
 .PHONY: all clean
-
-all: $(TARGETS)
 
 $(OBJECTS): %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(TARGETS): %: %.o zelva.o
+program: $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 clean:
 	-rm -f *.o
-	-rm -f $(TARGET)
+	-rm -f program
