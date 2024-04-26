@@ -1,6 +1,6 @@
-#include "inputread-module.h"
-#include "alpha_mod-module.h"
-#include "axiom_string-module.h"
+#include "inputread.h"
+#include "alpha_modification.h"
+#include "axiom_string.h"
 #include "zelva.h"
 #include <stdio.h>
 #include <stdlib.h>

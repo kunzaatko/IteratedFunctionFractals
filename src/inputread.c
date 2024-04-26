@@ -1,5 +1,5 @@
-#include "alpha_mod-module.h"
-#include "axiom_string-module.h"
+#include "alpha_modification.h"
+#include "axiom_string.h"
 #include <stdio.h>
 
 // type for representing the prescription of the iterated function

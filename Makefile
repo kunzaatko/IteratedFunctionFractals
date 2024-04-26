@@ -3,18 +3,34 @@ CFLAGS := -std=c99 -Wall  -I ./include/ -lm -fPIE
 LDFLAGS := -pthread -L ./lib
 LDLIBS := -lm -lSDL2 -ldl
 
-HEADERS := $(wildcard *.h)
-SOURCES := $(wildcard *.c)
-OBJECTS := $(patsubst %.c, %.o, $(SOURCES))
+BUILD_DIR := build
+SOURCE_DIR := src
+BIN := program
 
-.PHONY: all clean
+HEADERS := $(wildcard $(SOURCE_DIR)/*.h)
+SOURCES := $(wildcard $(SOURCE_DIR)/*.c)
+OBJECTS := $(patsubst $(SOURCE_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
 
-$(OBJECTS): %.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c -o $@ $<
+.PHONY: $(BIN)
+$(BIN): $(BUILD_DIR)/$(BIN)
 
-program: $(OBJECTS)
-	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+.PRECIOUS: $(BUILD_DIR)/. $(BUILD_DIR)%/.
+
+$(BUILD_DIR)/.:
+	mkdir -p $@
+
+$(BUILD_DIR)%/.:
+	mkdir -p $@
+
+.SECONDEXPANSION:
+
+$(OBJECTS): $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c $(HEADERS) | $$(@D)/.
+	$(CC) $(CFLAGS) -c $< -o $@ 
+
+$(BUILD_DIR)/$(BIN): $(OBJECTS)
+	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
+	ln -rs $(BUILD_DIR)/$(BIN) $(BIN)
 
 clean:
-	-rm -f *.o
-	-rm -f program
+	-rm -rf $(BUILD_DIR)
+	-rm -f $(BIN)
