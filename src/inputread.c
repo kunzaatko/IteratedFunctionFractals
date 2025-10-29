@@ -12,13 +12,20 @@ typedef struct input_t {
     MODIFICATION_t** mod;
 } input_t;
 
-input_t load_input(input_t* out, const char* input_name)
-{
-    FILE* input = fopen(input_name, "r");
-    if (input == NULL) {
-        printf("Soubor '{%s}' nelze otevřít\n", input_name);
-    }
+void fprint_input(FILE* stream, input_t* input) {
+    // fprint_SLL_alpha(stream, input->alpha);
+    fprintf(stream, "AXIOM - ");
+    fprint_DLL_axiom(stream, input->axiom);
+    // fprintf(stream, "\nMODIFIKACE:\n");
+    // fprint_SLL_mod(stream, input->mod);
+}
 
+void print_input(input_t* input) {
+    fprint_input(stdout, input);
+}
+
+int load_input(input_t* out, FILE* input)
+{
     //LOAD_ALPHA
     ALPHABET_t* alpha = (ALPHABET_t*)malloc(sizeof(ALPHABET_t));
     alpha = NULL;
@@ -41,7 +48,6 @@ input_t load_input(input_t* out, const char* input_name)
             action_next);
     }
     fscanf(input, ";\n"); //už jsem pozicí v input těsně před "AXIOM"
-    print_SLL_alpha(&alpha);
 
     //LOAD_AXIOM
     node_t* SEZNAM = (node_t*)malloc(sizeof(node_t));
@@ -57,14 +63,11 @@ input_t load_input(input_t* out, const char* input_name)
         new_axiom_char = fgetc(input);
     }
     fscanf(input, ";\n"); //už jsem pozicí těsně před "GENERACNI PROMENA"
-    printf("AXIOM - ");
-    print_DLL_axiom(&SEZNAM);
 
     //LOAD_MOD
     MODIFICATION_t* mod = (MODIFICATION_t*)malloc(sizeof(MODIFICATION_t));
     mod = NULL;
 
-    printf("\nMODIFIKACE:\n");
     //z nějakýho důvodu nefungoval "fscanf"
     while (fgetc(input) != '{') {
         fgetc(input);
@@ -102,23 +105,19 @@ input_t load_input(input_t* out, const char* input_name)
         new_mod = fgetc(input);
         append_mod(&mod, character, &string_head_ref_stack[i]);
     }
-    print_SLL_mod(&mod);
-    fscanf(input, ";");
+    fscanf(input, ";\n");
 
     char end = fgetc(input);
     if (end == EOF) {
         printf("\ninput loaded successfully\n\n");
+        out->alpha = &alpha;
+        out->axiom = &SEZNAM;
+        out->mod = &mod;
+        print_input(out);
+        return 0;
     } else {
         printf("\nthere is some problem with the input format\n\n");
+        return 1;
     }
 
-    out->alpha = &alpha;
-    out->axiom = &SEZNAM;
-    out->mod = &mod;
-
-    print_DLL_axiom(out->axiom);
-    print_SLL_alpha(out->alpha);
-    print_SLL_mod(out->mod);
-
-    return *out;
 }

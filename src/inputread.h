@@ -10,5 +10,8 @@ typedef struct
     MODIFICATION_t** mod;
 } input_t;
 
+void fprint_input(FILE* stream, input_t* input);
+void print_input(input_t* input);
+
 //allokuje parametry input do struktury input_t
-void load_input(input_t* out, const char* input_name);
+int load_input(input_t* out, FILE* input);

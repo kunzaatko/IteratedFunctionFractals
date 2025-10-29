@@ -10,7 +10,11 @@ typedef struct node_t {
 } node_t;
 
 //vytisknout celý seznam
+void fprint_DLL_axiom(FILE * stream, node_t** head_ref);
+
+//vytisknout celý seznam
 void print_DLL_axiom(node_t** head_ref);
+
 //přidání uzlu na začátek a přesunutí adresy začátku
 void push(node_t** head_ref, char new_character);
 //vložení uzlu na konec a založení konce
@@ -25,3 +29,5 @@ void del_Node(node_t** head_ref /* DLL */, node_t* del_node /* uzel na vymazán�
 void del_first_Node(node_t** head_ref /* DLL */);
 //vymazat DLL
 void del_DLL(node_t** head_ref /* DLL */);
+
+unsigned int len_DLL(node_t** head_ref);

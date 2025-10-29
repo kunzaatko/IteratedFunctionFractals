@@ -1,85 +1,88 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// struktura uzlu
+//node structure
 typedef struct node_t {
     char character;
     struct node_t* prev;
     struct node_t* next;
 } node_t;
 
-//vytisknout celý seznam
-void print_DLL_axiom(node_t** head_ref)
+// Print the axiom
+void fprint_DLL_axiom(FILE* stream, node_t** head_ref)
 {
     node_t* print = *head_ref;
-    printf("{");
+    fprintf(stream,"{");
     while (print != NULL) {
-        printf("%c", print->character);
+        fprintf(stream,"%c", print->character);
         print = print->next;
     }
-    printf("}\n");
+    fprintf(stream,"}\n");
 }
 
-// přidá uzel na začátek
-void push(node_t** head_ref /* DLL */, char new_character /* "nový písmeno" */)
+void print_DLL_axiom(node_t** head_ref) {
+    fprint_DLL_axiom(stdout, head_ref);
+}
+
+// Adds a node to the beginning
+void push(node_t** head_ref /* DLL reference */, char new_character /* new letter */)
 {
-    // alokování nového uzlu
+    // allocating a new node
     node_t* new_node = (node_t*)malloc(sizeof(node_t));
     new_node->character = new_character;
     new_node->next = (*head_ref);
 
-    // první uzel seznamu ->
+    // first node of the list ->
     new_node->prev = NULL;
 
-    // pokud první prvek před přidáním existuje, tak je potřeba ukázat na první
-    // prvek po přidání
+    // If the first element exists before the addition, it needs to point to the first
+    // element after the addition
     if ((*head_ref) != NULL) {
         (*head_ref)->prev = new_node;
     }
-    // přeadresování ukazatel "head_ref"
+    // Redirecting the pointer "head_ref"
     (*head_ref) = new_node;
 }
 
-// přidá uzel na konec
-void append(node_t** head_ref /* DLL */, char new_character /* "nový písmeno" */)
+// Adds a node to the end
+void append(node_t** head_ref /* DLL */, char new_character /* new letter */)
 {
-    // alokování nového uzlu
+    // allocating a new node
     node_t* new_node = (node_t*)malloc(sizeof(node_t));
     new_node->character = new_character;
-    // poslední uzel seznamu ->
+    // last node of the list ->
     new_node->next = NULL;
 
-    // DLL prázdný->
+    // Empty DLL
     if ((*head_ref) == NULL) {
         new_node->prev = NULL;
         (*head_ref) = new_node;
         return;
     }
 
-    // nalezení posledního uzlu DLL
+    // Finding the last node of the DLL
     node_t* last = (*head_ref);
     while (last->next != NULL) {
         last = last->next;
     }
 
-    // ukázat na nový uzel
+    // Point to the new node
     last->next = new_node;
 
-    // ukázat na "prev_node"
+    // point to "prev_node"
     new_node->prev = last;
 }
 
-// přidat uzel před "next_node" - (nekontroluju existenci "next_node" -> musím
-// dávat pozor, aby existoval)
+// Add a node before "next_node" - (I do not check the existence of "next_node" -> I have to be careful to ensure it exists)
 void insertBefore(node_t** head_ref /* DLL */,
-    node_t* next_node /* následující uzel */,
-    char new_character /* "nový písmeno" */)
+    node_t* next_node /* next node */,
+    char new_character /* new letter */)
 {
-    // alokování nového uzlu
+    // allocating a new node
     node_t* new_node = (node_t*)malloc(sizeof(node_t));
     new_node->character = new_character;
 
-    // DLL prázdný || "next_node" první uzel->
+    // DLL empty || `next_node` first node->
     if ((*head_ref) == NULL || (*head_ref) == next_node) {
         push(head_ref, new_character);
         return;
@@ -152,3 +155,14 @@ void del_DLL(node_t** head_ref /* DLL */)
         del_first_Node(head_ref);
     }
 }
+
+unsigned int len_DLL(node_t** head_ref) {
+    unsigned int len = 0;
+    node_t* current = *head_ref;
+    while (current != NULL) {
+        len++;
+        current = current->next;
+    }
+    return len;
+}
+

@@ -27,25 +27,35 @@ typedef struct ALPHABET_t //Je to SLL
 } ALPHABET_t;
 
 //vytisknout celou abecedu
-void print_SLL_alpha(ALPHABET_t** head_ref)
+void fprint_SLL_alpha(FILE* stream, ALPHABET_t** head_ref)
 {
-    printf("ABECEDA:\n");
+    fprintf(stream, "ABECEDA:\n");
     ALPHABET_t* print = *head_ref;
     while (print != NULL) {
-        printf("%c - (PROTISMĚRU: %.1f°,POSMĚRU: %.1f°, %dx dopředu, %dx dozadu), \n", print->character, print->action->p, print->action->m, print->action->f, print->action->b);
+        fprintf(stream,"%c - (PROTISMĚRU: %.1f°,POSMĚRU: %.1f°, %dx dopředu, %dx dozadu), \n", print->character, print->action->p, print->action->m, print->action->f, print->action->b);
         print = print->next;
     }
-    printf("\n");
+    fprintf(stream,"\n");
+}
+
+void print_SLL_alpha(ALPHABET_t** head_ref)
+{
+    fprint_SLL_alpha(stdout, head_ref);
 }
 
 //vytisknout celý seznam akcí
-void print_SLL_action(ACTION_t** head_ref)
+void fprint_SLL_action(FILE* stream, ACTION_t** head_ref)
 {
     ACTION_t* print = *head_ref;
     while (print != NULL) {
-        printf("(%.1f, %.1f, %d, %d)\n", print->p, print->m, print->f, print->b);
+        fprintf(stream, "(%.1f, %.1f, %d, %d)\n", print->p, print->m, print->f, print->b);
         print = print->next;
     }
+}
+
+void print_SLL_action(ACTION_t** head_ref)
+{
+    fprint_SLL_action(stdout, head_ref);
 }
 
 //přidání na konec
@@ -118,15 +128,37 @@ void del_SLL_action(ACTION_t** head_ref)
     }
 }
 
+unsigned int len_SLL_action(ACTION_t** head_ref) {
+    unsigned int len = 0;
+    ACTION_t* point = *head_ref;
+    while (point != NULL) {
+        len++;
+        point = point->next;
+    }
+    return len;
+}
+
+unsigned int len_SLL_alpha(ALPHABET_t** head_ref) {
+    unsigned int len = 0;
+    ALPHABET_t* point = *head_ref;
+    while (point != NULL) {
+        len++;
+        point = point->next;
+    }
+    return len;
+}
+
 //vytisknout celý seznam modifikací
-void print_SLL_mod(MODIFICATION_t** head_ref)
-{
+void fprint_SLL_mod(FILE* stream, MODIFICATION_t** head_ref) {
     MODIFICATION_t* print = (*head_ref);
     while (print != NULL) {
-        printf("%c -> ", print->character);
-        print_DLL_axiom(print->string_head_ref);
+        fprintf(stream, "%c -> ", print->character);
+        fprint_DLL_axiom(stream, print->string_head_ref);
         print = print->next;
     }
+}
+void print_SLL_mod(MODIFICATION_t** head_ref) {
+    fprint_SLL_mod(stdout, head_ref);
 }
 
 void append_mod(MODIFICATION_t** head_ref, char new_character, node_t** new_string_head_ref)
@@ -147,8 +179,7 @@ void append_mod(MODIFICATION_t** head_ref, char new_character, node_t** new_stri
     }
 }
 
-void del_first_mod(MODIFICATION_t** head_ref)
-{
+void del_first_mod(MODIFICATION_t** head_ref) {
     if ((*head_ref) != NULL) {
         MODIFICATION_t* first = *head_ref;
         *head_ref = (*head_ref)->next;
@@ -157,15 +188,13 @@ void del_first_mod(MODIFICATION_t** head_ref)
     }
 }
 
-void del_SLL_mod(MODIFICATION_t** head_ref)
-{
+void del_SLL_mod(MODIFICATION_t** head_ref) {
     while ((*head_ref) != NULL) {
         del_first_mod(head_ref);
     }
 }
 
-void del_input(ALPHABET_t** head_ref_alpha, ACTION_t** head_ref_action, MODIFICATION_t** head_ref_mod)
-{
+void del_input(ALPHABET_t** head_ref_alpha, ACTION_t** head_ref_action, MODIFICATION_t** head_ref_mod) {
     del_SLL_alpha(head_ref_alpha);
     del_SLL_action(head_ref_action);
     del_SLL_mod(head_ref_mod);

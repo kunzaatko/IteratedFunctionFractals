@@ -23,8 +23,10 @@ typedef struct ALPHABET_t //Je to SLL
 
 //vytisknout celou abecedu
 void print_SLL_alpha(ALPHABET_t** head_ref);
+void fprint_SLL_alpha(FILE* stream, ALPHABET_t** head_ref);
 //vytisknout celý seznam akcí
 void print_SLL_action(ACTION_t** head_ref);
+void fprint_SLL_action(FILE* stream, ACTION_t** head_ref);
 
 //přidání na konec
 void append_alpha(ALPHABET_t** head_ref /* SLL */, char new_character /*nový písmeno abecedy*/, ACTION_t* new_action /* akce odpovídající znaku */);
@@ -39,6 +41,26 @@ void del_first_action(ACTION_t** head_ref);
 //dealokuje SLL action
 void del_SLL_action(ACTION_t** head_ref);
 
+/**
+ * @brief Calculates the length of the single linked list of actions.
+ *
+ * This function calculates the length of the single linked list of actions.
+ * It takes the head reference of the list as an input and returns the length of the list.
+ *
+ * @param head_ref The reference to the head of the linked list.
+ * @return The length of the linked list.
+ */
+unsigned int len_SLL_action(ACTION_t** head_ref);
+
+/**
+ * @brief Get the length of the linked list of alphabet.
+ *
+ * @param head_ref Pointer to the head of the linked list.
+ * @return The length of the linked list of alphabet.
+ */
+unsigned int len_SLL_alpha(ALPHABET_t** head_ref);
+
+
 //struktura modifikace (character se nahrazuje, modification_stringem)
 typedef struct MODIFICATION_t {
     char character; //písmeno, které se upravuje
@@ -48,6 +70,7 @@ typedef struct MODIFICATION_t {
 
 //vytisknout celý seznam modifikací
 void print_SLL_mod(MODIFICATION_t** head_ref);
+void fprint_SLL_mod(FILE* stream, MODIFICATION_t** head_ref);
 //Přidá modifikaci
 void append_mod(MODIFICATION_t** head_ref, char new_character, node_t** new_modification_string);
 //dealokuje SLL mod
